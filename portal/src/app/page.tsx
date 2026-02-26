@@ -3,96 +3,194 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, Loader2, PlayCircle, ShieldCheck } from 'lucide-react';
 
-const QUIZ_STEPS = [
+type QuizOption = { label: string; image?: string };
+type QuizStep = { id: string; question: string; options: QuizOption[] };
+
+const QUIZ_STEPS: QuizStep[] = [
     {
         id: 'meta_principal',
         question: 'Qual é o seu maior objetivo hoje?',
-        options: ['Secar a Barriga da Menopausa', 'Aliviar Dores no Corpo', 'Ter Mais Energia e Disposição', 'Tonificar o Corpo todo']
+        options: [
+            { label: 'Secar a Barriga da Menopausa' },
+            { label: 'Aliviar Dores no Corpo' },
+            { label: 'Ter Mais Energia e Disposição' },
+            { label: 'Tonificar o Corpo todo' }
+        ]
     },
     {
         id: 'idade',
         question: 'Qual é a sua faixa etária?',
-        options: ['35 a 45 anos', '46 a 55 anos', '56 a 65 anos', 'Mais de 65 anos']
+        options: [
+            { label: '30-40 anos' },
+            { label: '41-50 anos' },
+            { label: '51-60 anos' },
+            { label: '61-70 anos' }
+        ]
+    },
+    {
+        id: 'imagem_corpo',
+        question: 'Qual imagem mais se aproxima do seu corpo hoje?',
+        options: [
+            { label: 'Falsa Magra (Pochete)', image: '/images/quiz/falsa-magra.webp' },
+            { label: 'Muito Acima do peso', image: '/images/quiz/muito-acima.webp' }
+        ]
+    },
+    {
+        id: 'corpo_desejado',
+        question: 'Qual imagem representa o corpo que você deseja alcançar?',
+        options: [
+            { label: 'Corpo Definido', image: '/images/quiz/corpo-definido.jpg' },
+            { label: 'Corpo Magro', image: '/images/quiz/corpo-magro.jpg' }
+        ]
     },
     {
         id: 'reacao_corpo',
         question: 'Como seu corpo responde a dietas ou exercícios hoje em dia?',
-        options: ['Não responde mais (Travado)', 'Responde muito devagar', 'Até responde, mas não mantenho']
+        options: [
+            { label: 'Não responde mais (Travado)' },
+            { label: 'Responde muito devagar' },
+            { label: 'Até responde, mas não mantenho' }
+        ]
     },
     {
         id: 'gordura_localizada',
         question: 'Onde a gordura mais te incomoda hoje?',
-        options: ['Barriga Estômago/Pochete', 'Braços e Costas', 'Pernas, Quadril e Culote', 'Corpo como um todo']
+        options: [
+            { label: 'Barriga Estômago/Pochete' },
+            { label: 'Braços e Costas' },
+            { label: 'Pernas, Quadril e Culote' },
+            { label: 'Corpo como um todo' }
+        ]
     },
     {
         id: 'energia',
         question: 'Como você se sente ao longo do dia?',
-        options: ['Muito cansada, sem vontade de nada', 'Minha energia oscila muito', 'Normal, mas chego exausta à noite']
+        options: [
+            { label: 'Muito cansada, sem vontade de nada' },
+            { label: 'Minha energia oscila muito' },
+            { label: 'Normal, mas chego exausta à noite' }
+        ]
     },
     {
         id: 'dores',
         question: 'Quais dores físicas mais afetam sua rotina?',
-        options: ['Costas e Lombar', 'Joelhos e Articulações', 'Pescoço e Ombros tensos', 'Felizmente, não tenho dores crônicas']
+        options: [
+            { label: 'Costas e Lombar' },
+            { label: 'Joelhos e Articulações' },
+            { label: 'Pescoço e Ombros tensos' },
+            { label: 'Felizmente, não tenho dores crônicas' }
+        ]
     },
     {
         id: 'metabolismo',
         question: 'Como você descreveria seu metabolismo após os 40?',
-        options: ['Lento: Engordo só de olhar pra comida', 'Normal, mas sinto que freou', 'Acelerado, mas perco massa magra']
+        options: [
+            { label: 'Lento: Engordo só de olhar pra comida' },
+            { label: 'Normal, mas sinto que freou' },
+            { label: 'Acelerado, mas perco massa magra' }
+        ]
     },
     {
         id: 'tempo_livre',
         question: 'Quanto tempo você tem disponível por dia para você mesma?',
-        options: ['Quase nada (10 a 15 minutos)', 'Cerca de 30 minutos', 'Mais de 1 hora']
+        options: [
+            { label: 'Quase nada (10 a 15 minutos)' },
+            { label: 'Cerca de 30 minutos' },
+            { label: 'Mais de 1 hora' }
+        ]
     },
     {
         id: 'inchaco',
         question: 'Você sofre frequentemente com sensação de inchaço e retenção?',
-        options: ['Sim, praticamente todos os dias', 'Só algumas vezes por mês', 'Raramente me sinto inchada']
+        options: [
+            { label: 'Sim, praticamente todos os dias' },
+            { label: 'Só algumas vezes por mês' },
+            { label: 'Raramente me sinto inchada' }
+        ]
     },
     {
         id: 'sono',
         question: 'Como está a qualidade do seu sono ultimamente?',
-        options: ['Péssimo (Acordo várias vezes / Insônia)', 'Acordo já me sentindo cansada', 'Durmo razoavelmente bem']
+        options: [
+            { label: 'Péssimo (Acordo várias vezes / Insônia)' },
+            { label: 'Acordo já me sentindo cansada' },
+            { label: 'Durmo razoavelmente bem' }
+        ]
     },
     {
         id: 'rotina',
         question: 'Como é a sua rotina de vida/trabalho?',
-        options: ['Trabalho muito fora de casa', 'Trabalho em Home Office', 'Cuido da casa e família', 'Aposentada, mas muito ocupada']
+        options: [
+            { label: 'Trabalho muito fora de casa' },
+            { label: 'Trabalho em Home Office' },
+            { label: 'Cuido da casa e família' },
+            { label: 'Aposentada, mas muito ocupada' }
+        ]
     },
     {
         id: 'exercicios',
         question: 'Qual sua frequência atual de exercícios físicos?',
-        options: ['Totalmente sedentária', 'Caminhadas esporádicas', 'Tento treinar 2 a 3 vezes na semana']
+        options: [
+            { label: 'Totalmente sedentária' },
+            { label: 'Caminhadas esporádicas' },
+            { label: 'Tento treinar 2 a 3 vezes na semana' }
+        ]
     },
     {
         id: 'sintoma_menopausa',
         question: 'Qual o sintoma da Menopausa ou pré-menopausa mais te incomoda?',
-        options: ['Fogachos (Ondas de Calor absurdas)', 'Oscilações de Humor / Ansiedade', 'Ganho de Peso rápido e inexplicável', 'Baixa Libido e Cansaço']
+        options: [
+            { label: 'Fogachos (Ondas de Calor absurdas)' },
+            { label: 'Oscilações de Humor / Ansiedade' },
+            { label: 'Ganho de Peso rápido e inexplicável' },
+            { label: 'Baixa Libido e Cansaço' }
+        ]
     },
     {
         id: 'alimentacao',
         question: 'Na alimentação, qual é a sua "fraqueza"?',
-        options: ['Doces e Carboidratos (Pão, massa)', 'Beliscar o dia inteirinho', 'Finais de semana exagerados', 'Como pouco, mas alimentos errados']
+        options: [
+            { label: 'Doces e Carboidratos (Pão, massa)' },
+            { label: 'Beliscar o dia inteirinho' },
+            { label: 'Finais de semana exagerados' },
+            { label: 'Como pouco, mas alimentos errados' }
+        ]
     },
     {
         id: 'crenca',
         question: 'Você acredita que 10 a 15 minutos por dia, com o método certo, podem transformar seu corpo?',
-        options: ['Sim! Estou disposta a tentar hoje', 'Tenho dúvidas, mas quero ver', 'Não acredito muito']
+        options: [
+            { label: 'Sim! Estou disposta a tentar hoje' },
+            { label: 'Tenho dúvidas, mas quero ver' },
+            { label: 'Não acredito muito' }
+        ]
     },
     {
         id: 'felicidade',
         question: 'O que te deixaria mais feliz e realizada hoje?',
-        options: ['Voltar a vestir roupas que amo', 'Olhar no espelho e sentir orgulho', 'Ter fôlego para brincar com a família sem dor']
+        options: [
+            { label: 'Voltar a vestir roupas que amo' },
+            { label: 'Olhar no espelho e sentir orgulho' },
+            { label: 'Ter fôlego para brincar com a família sem dor' }
+        ]
     },
     {
         id: 'futuro',
         question: 'Sinceramente, o que acontece se você não mudar nada hoje?',
-        options: ['Minha saúde vai piorar drasticamente', 'Vou continuar frustrada comigo mesma', 'Tenho muito medo de doenças futuras']
+        options: [
+            { label: 'Minha saúde vai piorar drasticamente' },
+            { label: 'Vou continuar frustrada comigo mesma' },
+            { label: 'Tenho muito medo de doenças futuras' }
+        ]
     },
     {
         id: 'comprometimento',
         question: 'De 0 a 10, o quanto você está comprometida a mudar o rumo da sua saúde agora?',
-        options: ['10! Preciso mudar isso agora mesmo', '8/9 - Quero muito mudar', 'Ainda estou pensando']
+        options: [
+            { label: '10! Preciso mudar isso agora mesmo' },
+            { label: '8/9 - Quero muito mudar' },
+            { label: 'Ainda estou pensando' }
+        ]
     }
 ];
 
@@ -192,20 +290,44 @@ export default function HomeQuiz() {
                     {QUIZ_STEPS[currentStep].question}
                 </h1>
 
-                <div className="space-y-4">
-                    {QUIZ_STEPS[currentStep].options.map((option, idx) => {
-                        const isSelected = answers[QUIZ_STEPS[currentStep].id] === option;
+                <div className={`space-y-4 ${QUIZ_STEPS[currentStep].options.some(o => o.image) ? 'grid grid-cols-2 gap-4 space-y-0' : ''}`}>
+                    {QUIZ_STEPS[currentStep].options.map((optionObj, idx) => {
+                        const isSelected = answers[QUIZ_STEPS[currentStep].id] === optionObj.label;
+
+                        if (optionObj.image) {
+                            return (
+                                <button
+                                    key={idx}
+                                    onClick={() => handleAnswer(optionObj.label)}
+                                    className={`w-full flex !min-h-[220px] flex-col items-center rounded-2xl border-4 overflow-hidden shadow-sm transition-all group
+                                        ${isSelected
+                                            ? 'border-[#F2994A] bg-[#F2994A]/10 scale-[1.02]'
+                                            : 'border-transparent bg-white hover:border-[#F2994A]/40'}
+                                    `}
+                                >
+                                    <div className="w-full h-40 relative bg-gray-100 flex-grow">
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                                        <img src={optionObj.image} alt={optionObj.label} className="w-full h-full object-cover pointer-events-none" />
+                                    </div>
+                                    <div className="p-3 bg-white w-full text-center font-bold text-gray-800 text-sm border-t border-gray-100 flex flex-col items-center gap-2">
+                                        <span>{optionObj.label}</span>
+                                        <div className={`w-5 h-5 rounded-full border-2 transition-colors ${isSelected ? 'border-[#F2994A] bg-[#F2994A]' : 'border-gray-300 group-hover:border-[#F2994A]/50'}`}></div>
+                                    </div>
+                                </button>
+                            );
+                        }
+
                         return (
                             <button
                                 key={idx}
-                                onClick={() => handleAnswer(option)}
+                                onClick={() => handleAnswer(optionObj.label)}
                                 className={`w-full text-left p-5 rounded-2xl border-2 transition-all font-semibold text-[15px] sm:text-base flex items-center justify-between group
                                     ${isSelected
                                         ? 'border-[#F2994A] bg-[#F2994A]/10 text-gray-900'
                                         : 'border-gray-100 bg-gray-50 text-gray-600 hover:border-[#F2994A]/40 hover:bg-white'}
                                 `}
                             >
-                                {option}
+                                {optionObj.label}
                                 <div className={`w-5 h-5 rounded-full border-2 transition-colors ${isSelected ? 'border-[#F2994A] bg-[#F2994A]' : 'border-gray-300 group-hover:border-[#F2994A]/50'}`}></div>
                             </button>
                         );

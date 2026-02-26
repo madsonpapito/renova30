@@ -109,8 +109,8 @@ export default function VSLPage() {
 
                         {/* Box Mockup (Placeholder for Mockup Core) */}
                         <div className="bg-white p-6 rounded-2xl shadow-sm mb-6 border border-gray-100 flex flex-col items-center">
-                            <div className="w-full max-w-xs aspect-video bg-gray-100 rounded-lg mb-6 flex items-center justify-center">
-                                <span className="text-gray-400 font-bold">Imagem do App Pilates em Casa</span>
+                            <div className="w-full max-w-xs relative rounded-lg mb-6 flex items-center justify-center overflow-hidden">
+                                <Image src="/images/quiz/mockup-completo.jpg" alt="O que você vai receber" width={400} height={300} className="w-full h-auto object-contain" />
                             </div>
 
                             <ul className="text-left space-y-3 font-semibold text-gray-700">
@@ -129,17 +129,23 @@ export default function VSLPage() {
                         <h2 className="text-xl font-black uppercase text-gray-800 mb-6 px-4">
                             EU QUERO TE DAR MAIS ALGUNS PRESENTES 🎁
                         </h2>
-                        <div className="bg-white p-6 rounded-2xl shadow-sm space-y-4 text-left border border-gray-100 max-w-md mx-auto">
-                            <div className="flex items-start gap-3">
-                                <div>
-                                    <h4 className="font-bold text-gray-900 border-b border-gray-200 pb-1 mb-1">🎁 1. GUIA DE COMPRAS</h4>
-                                    <p className="text-sm text-gray-600">Aprenda a escolher os melhores alimentos com inteligência para não cair em armadilhas de supermercado.</p>
+                        <div className="bg-white p-6 rounded-2xl shadow-sm space-y-6 text-left border border-gray-100 max-w-md mx-auto">
+                            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 text-center sm:text-left">
+                                <div className="w-32 h-32 relative flex-shrink-0">
+                                    <Image src="/images/quiz/bonus-compras.png" alt="Guia de Compras" fill className="object-contain drop-shadow-md" />
+                                </div>
+                                <div className="flex-1 mt-2 sm:mt-0">
+                                    <h4 className="font-bold text-gray-900 border-b border-gray-200 pb-1 mb-2">🎁 1. GUIA DE COMPRAS</h4>
+                                    <p className="text-sm text-gray-600 leading-relaxed">Aprenda a escolher os melhores alimentos com inteligência para não cair em armadilhas de supermercado.</p>
                                 </div>
                             </div>
-                            <div className="flex items-start gap-3">
-                                <div>
-                                    <h4 className="font-bold text-gray-900 border-b border-gray-200 pb-1 mb-1">🎁 2. COMER EMOCIONAL</h4>
-                                    <p className="text-sm text-gray-600">Estratégias simples para blindar sua mente contra ataques de compulsão em momentos de estresse.</p>
+                            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 text-center sm:text-left pt-4 border-t border-gray-100">
+                                <div className="w-32 h-32 relative flex-shrink-0">
+                                    <Image src="/images/quiz/bonus-emocional.png" alt="Comer Emocional" fill className="object-contain drop-shadow-md" />
+                                </div>
+                                <div className="flex-1 mt-2 sm:mt-0">
+                                    <h4 className="font-bold text-gray-900 border-b border-gray-200 pb-1 mb-2">🎁 2. COMER EMOCIONAL</h4>
+                                    <p className="text-sm text-gray-600 leading-relaxed">Estratégias simples para blindar sua mente contra ataques de compulsão em momentos de estresse.</p>
                                 </div>
                             </div>
                         </div>
