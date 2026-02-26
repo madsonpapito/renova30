@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-color: #87A96B; /* Verde Sálvia */
+  --secondary-color: #EEDC82; /* Dourado Suave */
+  --accent-color: #FF7F50; /* Coral */
+  --bg-color: #F8F9FA; /* Off-white */
+  --text-color: #2C3E50; /* Dark Blue/Gray */
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: 'Inter', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display', serif;
+}
+
+@layer utilities {
+  .bg-primary {
+    background-color: var(--primary-color);
+  }
+  .bg-secondary {
+    background-color: var(--secondary-color);
+  }
+  .bg-accent {
+    background-color: var(--accent-color);
+  }
+  .text-primary {
+    color: var(--primary-color);
+  }
+  .text-secondary {
+    color: var(--secondary-color);
+  }
+  .text-accent {
+    color: var(--accent-color);
+  }
+  .btn-base {
+    @apply inline-flex items-center justify-center font-semibold rounded-lg shadow-sm transition-all duration-300;
+  }
+  .btn-primary {
+    @apply btn-base bg-primary text-white hover:bg-[#6e8a56];
+  }
+  .btn-accent {
+    @apply btn-base bg-accent text-white hover:bg-[#e06c3f];
+  }
+}

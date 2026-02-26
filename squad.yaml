@@ -1,0 +1,56 @@
+name: renova-30
+version: 1.0.0
+description: "Esquadrão para desenvolver a plataforma de bem-estar digital Renova 30."
+author: "Craft @squad-creator"
+license: MIT
+slashPrefix: renova30
+
+aios:
+  minVersion: "2.1.0"
+  type: squad
+
+components:
+  agents:
+    - dev-fullstack.md
+    - ux-designer.md
+    - pm.md
+    - qa.md
+    - content-manager.md
+  tasks:
+    - build-sales-page.md
+    - build-members-area.md
+    - setup-payment-gateway.md
+    - implement-quiz.md
+    - design-sales-page-ux.md
+    - design-members-area-ux.md
+    - create-wireframes.md
+    - create-backlog.md
+    - define-sprints.md
+    - track-progress.md
+    - create-test-plan.md
+    - execute-functional-tests.md
+    - report-bugs.md
+    - upload-course-videos.md
+    - structure-pdf-bonuses.md
+    - organize-content-modules.md
+  workflows: []
+  checklists: []
+  templates: []
+  tools: []
+  scripts: []
+
+config:
+  extends: extend
+  coding-standards: config/coding-standards.md
+  tech-stack: config/tech-stack.md
+  source-tree: config/source-tree.md
+
+dependencies:
+  node: []
+  python: []
+  squads: []
+
+tags:
+  - renova30
+  - wellness
+  - digital-product

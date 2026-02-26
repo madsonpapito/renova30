@@ -1,0 +1,193 @@
+{
+    "name": "Renova 30",
+    "modules": [
+        {
+            "id": "module-protocolo",
+            "title": "Módulo 1: Meu Protocolo Renova 30",
+            "description": "Seu guia personalizado gerado após o Quiz de Entrada.",
+            "items": [
+                {
+                    "type": "pdf",
+                    "title": "Meu Protocolo Personalizado",
+                    "locked": false,
+                    "content": "Gerado dinamicamente"
+                }
+            ]
+        },
+        {
+            "id": "module-treinos",
+            "title": "Módulo 2: Treinos Renova 30 – Pilates de 10 Min",
+            "description": "Programa guiado semanal de exercícios físicos sem impacto.",
+            "sections": [
+                {
+                    "title": "Nível Iniciante (Semanas 1-4)",
+                    "items": [
+                        {
+                            "type": "video",
+                            "title": "Treino Semana 1: Despertar Hormonal",
+                            "duration": "10:00",
+                            "url": "https://player.vimeo.com/video/824804225?h=64cfc40f09"
+                        },
+                        {
+                            "type": "video",
+                            "title": "Treino Semana 2: Queima da Barriga",
+                            "duration": "10:00",
+                            "url": "https://player.vimeo.com/video/824804225?h=64cfc40f09"
+                        },
+                        {
+                            "type": "video",
+                            "title": "Treino Semana 3: Força e Tonificação",
+                            "duration": "10:00",
+                            "url": "https://player.vimeo.com/video/824804225?h=64cfc40f09"
+                        },
+                        {
+                            "type": "video",
+                            "title": "Treino Semana 4: Energia e Metabolismo",
+                            "duration": "10:00",
+                            "url": "https://player.vimeo.com/video/824804225?h=64cfc40f09"
+                        }
+                    ]
+                },
+                {
+                    "title": "Nível Intermediário (Semanas 5-8)",
+                    "items": [
+                        {
+                            "type": "video",
+                            "title": "Treino Semana 5: Aprofundando a Prática",
+                            "duration": "10:00",
+                            "url": "https://player.vimeo.com/video/824804225?h=64cfc40f09"
+                        },
+                        {
+                            "type": "video",
+                            "title": "Treino Semana 6: Progressão Core",
+                            "duration": "10:00",
+                            "url": "https://player.vimeo.com/video/824804225?h=64cfc40f09"
+                        },
+                        {
+                            "type": "video",
+                            "title": "Treino Semana 7: Desafio Abdominal",
+                            "duration": "10:00",
+                            "url": "https://player.vimeo.com/video/824804225?h=64cfc40f09"
+                        },
+                        {
+                            "type": "video",
+                            "title": "Treino Semana 8: Controle Total",
+                            "duration": "10:00",
+                            "url": "https://player.vimeo.com/video/824804225?h=64cfc40f09"
+                        }
+                    ]
+                },
+                {
+                    "title": "Nível Avançado (Semanas 9-12)",
+                    "items": [
+                        {
+                            "type": "video",
+                            "title": "Treino Semanas 9-12: Manutenção Jovem (Aulas Mistas)",
+                            "duration": "10:00",
+                            "url": "https://player.vimeo.com/video/824804225?h=64cfc40f09"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "module-alimentacao",
+            "title": "Módulo 3: Alimentação Renova 30",
+            "description": "Planos e receitas focadas no estímulo hormonal natural.",
+            "items": [
+                {
+                    "type": "pdf",
+                    "title": "Plano Alimentar de 28 Dias",
+                    "content": "Link para PDF"
+                },
+                {
+                    "type": "pdf",
+                    "title": "Guia de Substituições",
+                    "content": "Link para PDF"
+                }
+            ],
+            "sections": [
+                {
+                    "title": "Receitas Rápidas",
+                    "items": [
+                        {
+                            "type": "video",
+                            "title": "Receita 1: Café da Manhã Energético",
+                            "duration": "05:00",
+                            "url": "https://player.vimeo.com/video/824804225?h=64cfc40f09"
+                        },
+                        {
+                            "type": "video",
+                            "title": "Receita 2: Almoço Anti-inchaço",
+                            "duration": "07:00",
+                            "url": "https://player.vimeo.com/video/824804225?h=64cfc40f09"
+                        },
+                        {
+                            "type": "video",
+                            "title": "Receita 3: Lanche Regulador",
+                            "duration": "04:00",
+                            "url": "https://player.vimeo.com/video/824804225?h=64cfc40f09"
+                        },
+                        {
+                            "type": "video",
+                            "title": "Receita 4: Jantar Leve Menopausa",
+                            "duration": "06:00",
+                            "url": "https://player.vimeo.com/video/824804225?h=64cfc40f09"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "module-bonus",
+            "title": "Módulo 4: Bônus Exclusivos",
+            "description": "Materiais extras para potencializar seus resultados.",
+            "items": [
+                {
+                    "type": "pdf",
+                    "title": "Bônus 1: Guia Caça ao Tesouro Hormonal",
+                    "content": "Link para PDF"
+                },
+                {
+                    "type": "pdf",
+                    "title": "Bônus 2: Quebre o Ciclo – Controle Emocional",
+                    "content": "Link para PDF"
+                },
+                {
+                    "type": "audio",
+                    "title": "Áudio 1: Respiração 4-7-8",
+                    "duration": "03:00"
+                },
+                {
+                    "type": "audio",
+                    "title": "Áudio 2: Meditação Anti-Estresse",
+                    "duration": "05:00"
+                },
+                {
+                    "type": "audio",
+                    "title": "Áudio 3: Visualização Corporal",
+                    "duration": "04:30"
+                }
+            ]
+        },
+        {
+            "id": "module-order-bumps",
+            "title": "Order Bumps (Opcional - Requer Compra)",
+            "description": "Conteúdos adicionais liberados via acesso de checkout.",
+            "items": [
+                {
+                    "type": "pdf",
+                    "title": "Protocolo do Intestino Solto (7 Dias)",
+                    "locked": true,
+                    "content": "Link para PDF"
+                },
+                {
+                    "type": "pdf",
+                    "title": "Chás Seca e Desincham (8 Dias)",
+                    "locked": true,
+                    "content": "Link para PDF"
+                }
+            ]
+        }
+    ]
+}
