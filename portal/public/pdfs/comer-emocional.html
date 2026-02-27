@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Comer Emocional — Renova 30</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+        :root {
+            --purple: #8B5CF6;
+            --dark: #1C1C1E;
+            --light: #F8F8F8;
+            --green: #27AE60;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: white;
+            color: var(--dark);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        @media print {
+            .page {
+                page-break-after: always;
+            }
+
+            .no-break {
+                page-break-inside: avoid;
+            }
+
+            body {
+                font-size: 12px;
+            }
+
+            .print-btn {
+                display: none !important;
+            }
+        }
+
+        .print-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--purple);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 14px;
+            cursor: pointer;
+            z-index: 999;
+            box-shadow: 0 4px 20px rgba(139, 92, 246, .4);
+        }
+
+        /* COVER */
+        .cover {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1C1C1E 0%, #2D2D35 40%, #7C3AED 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 60px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cover::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: rgba(139, 92, 246, .1);
+            top: -150px;
+            right: -150px;
+        }
+
+        .cover .badge {
+            background: rgba(139, 92, 246, .2);
+            border: 1px solid rgba(139, 92, 246, .4);
+            color: #A78BFA;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            padding: 8px 20px;
+            border-radius: 50px;
+            margin-bottom: 32px;
+        }
+
+        .cover h1 {
+            font-size: 52px;
+            font-weight: 900;
+            color: white;
+            line-height: 1.1;
+            margin-bottom: 16px;
+            max-width: 600px;
+        }
+
+        .cover h1 span {
+            color: #A78BFA;
+        }
+
+        .cover p {
+            color: rgba(255, 255, 255, .6);
+            font-size: 18px;
+            max-width: 480px;
+            margin-bottom: 40px;
+        }
+
+        .cover .meta {
+            display: flex;
+            gap: 32px;
+            color: rgba(255, 255, 255, .5);
+            font-size: 13px;
+        }
+
+        .cover .meta strong {
+            color: white;
+        }
+
+        .page {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 60px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 32px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #F0F0F0;
+        }
+
+        .section-num {
+            width: 44px;
+            height: 44px;
+            background: var(--purple);
+            color: white;
+            font-weight: 900;
+            font-size: 20px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .section-header h2 {
+            font-size: 26px;
+            font-weight: 800;
+        }
+
+        /* COMPARISON TABLE */
+        .compare-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .compare-table th {
+            padding: 14px 20px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .compare-table th:first-child {
+            background: var(--green);
+            color: white;
+        }
+
+        .compare-table th:last-child {
+            background: #EB5757;
+            color: white;
+        }
+
+        .compare-table td {
+            padding: 12px 20px;
+            border-bottom: 1px solid #F0F0F0;
+            font-size: 13px;
+        }
+
+        .compare-table td:first-child {
+            background: #F0FBF5;
+            color: #1A5E35;
+            font-weight: 600;
+        }
+
+        .compare-table td:last-child {
+            background: #FFF5F5;
+            color: #8B1A1A;
+        }
+
+        /* METHOD CARD */
+        .method-card {
+            border-radius: 16px;
+            padding: 24px 28px;
+            margin-bottom: 20px;
+            border: 1px solid;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .method-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+        }
+
+        .method-card.pause {
+            background: #F5F3FF;
+            border-color: #DDD6FE;
+        }
+
+        .method-card.pause::before {
+            background: var(--purple);
+        }
+
+        .method-card.avalie {
+            background: #FFF8F0;
+            border-color: #FED7AA;
+        }
+
+        .method-card.avalie::before {
+            background: #F97316;
+        }
+
+        .method-card.redirecione {
+            background: #F0FDF4;
+            border-color: #BBF7D0;
+        }
+
+        .method-card.redirecione::before {
+            background: var(--green);
+        }
+
+        .method-card.aja {
+            background: #EFF6FF;
+            border-color: #BFDBFE;
+        }
+
+        .method-card.aja::before {
+            background: #3B82F6;
+        }
+
+        .method-card .letter {
+            font-size: 36px;
+            font-weight: 900;
+            opacity: 0.15;
+            position: absolute;
+            right: 24px;
+            top: 16px;
+        }
+
+        .method-card h3 {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .method-card p {
+            font-size: 13px;
+            color: #444;
+            line-height: 1.7;
+        }
+
+        .method-card .quote {
+            background: rgba(0, 0, 0, .05);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-top: 12px;
+            font-style: italic;
+            font-size: 13px;
+            color: #555;
+        }
+
+        /* TRIGGER TABLE */
+        .trigger-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .trigger-table th {
+            background: var(--dark);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .trigger-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #F0F0F0;
+            font-size: 13px;
+        }
+
+        .trigger-table tr:nth-child(even) td {
+            background: #FAFAFA;
+        }
+
+        .trigger-table td:first-child {
+            font-weight: 700;
+        }
+
+        /* SITUATION CARD */
+        .situation {
+            background: white;
+            border: 1px solid #EBEBEB;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .situation .tag {
+            display: inline-block;
+            background: var(--purple);
+            color: white;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 50px;
+            margin-bottom: 12px;
+        }
+
+        .situation h3 {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .situation .context {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px dashed #EBEBEB;
+            font-style: italic;
+        }
+
+        .situation ul {
+            padding-left: 18px;
+        }
+
+        .situation ul li {
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: #444;
+        }
+
+        /* 7 DAYS */
+        .day-row {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px solid #F0F0F0;
+        }
+
+        .day-badge {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--purple), #A855F7);
+            color: white;
+            font-weight: 900;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .day-row h4 {
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+
+        .day-row p {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .back-cover {
+            background: linear-gradient(135deg, #7C3AED, #A855F7);
+            border-radius: 20px;
+            padding: 48px 40px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .back-cover h2 {
+            font-size: 32px;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .back-cover p {
+            color: rgba(255, 255, 255, .8);
+            font-size: 15px;
+            max-width: 480px;
+            margin: 0 auto 32px;
+            line-height: 1.7;
+        }
+
+        .back-cover .sig {
+            color: rgba(255, 255, 255, .6);
+            font-size: 13px;
+        }
+
+        .back-cover strong {
+            color: white;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px 60px;
+            border-top: 1px solid #EBEBEB;
+            color: #999;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <button class="print-btn" onclick="window.print()">🖨️ Imprimir / Salvar PDF</button>
+
+    <!-- CAPA -->
+    <div class="cover page">
+        <div class="badge">Bônus Exclusivo · Renova 30</div>
+        <h1>Comer<br /><span>Emocional</span></h1>
+        <p>Da compulsão à consciência — um guia gentil para quem come por ansiedade e quer sair desse ciclo de vez.</p>
+        <div class="meta">
+            <span>📄 <strong>22 páginas</strong></span>
+            <span>💜 <strong>Método P.A.R.A.</strong></span>
+            <span>⏱️ <strong>Leitura: 25 min</strong></span>
+        </div>
+    </div>
+
+    <!-- INTRODUÇÃO -->
+    <div class="page">
+        <div
+            style="background: #F5F3FF; border-radius: 16px; padding: 28px 32px; margin-bottom: 40px; border: 1px solid #DDD6FE;">
+            <p style="font-size: 16px; color: #4C1D95; font-weight: 600; line-height: 1.8;">
+                Você já se pegou comendo sem fome? Abrindo a geladeira às 22h sem saber por quê? Sentindo que uma
+                "recaída" apagou semanas de esforço?<br /><br />
+                <strong>Se sim, você não tem falta de força de vontade.</strong> Você tem um cérebro que aprendeu a usar
+                comida como calmante emocional — e isso tem solução.
+            </p>
+        </div>
+
+        <div class="section-header">
+            <div class="section-num">1</div>
+            <div>
+                <h2>Por que você come sem fome?</h2>
+            </div>
+        </div>
+
+        <div style="background: #1C1C1E; color: white; border-radius: 16px; padding: 28px 32px; margin-bottom: 24px;">
+            <p
+                style="color: #A78BFA; font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px;">
+                A Química do Conforto</p>
+            <p style="line-height: 1.8; color: rgba(255,255,255,.8);">Quando você está estressada, seu cérebro libera
+                <strong style="color: white;">cortisol</strong>. O cortisol faz seu cérebro buscar recompensas rápidas:
+                açúcar, gordura e sal liberam <strong style="color: #A78BFA;">dopamina</strong> imediatamente, criando
+                um ciclo de alívio instantâneo... seguido de culpa, que gera mais estresse, que pede mais comida.</p>
+            <p style="margin-top: 16px; font-weight: 800; color: #A78BFA; text-align: center; font-size: 16px;">Este é o
+                Loop de Recompensa Emocional.</p>
+        </div>
+
+        <table class="trigger-table">
+            <thead>
+                <tr>
+                    <th>Gatilho Emocional</th>
+                    <th>O que acontece por dentro</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>😔 Solidão</td>
+                    <td>Necessidade de conexão → comida como companhia</td>
+                </tr>
+                <tr>
+                    <td>😐 Tédio</td>
+                    <td>Falta de estímulo → comida como entretenimento</td>
+                </tr>
+                <tr>
+                    <td>😤 Frustração</td>
+                    <td>Impotência → comer para recuperar sensação de controle</td>
+                </tr>
+                <tr>
+                    <td>😴 Cansaço Extremo</td>
+                    <td>Baixa glicemia → o cérebro pede açúcar com urgência</td>
+                </tr>
+                <tr>
+                    <td>🌡️ Ansiedade Hormonal</td>
+                    <td>Flutuações pós-menopausa → compulsão fisiológica real</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- FOME REAL X EMOCIONAL -->
+    <div class="page">
+        <div class="section-header">
+            <div class="section-num" style="background: var(--green);">2</div>
+            <div>
+                <h2>Fome Real X Fome Emocional</h2>
+            </div>
+        </div>
+        <table class="compare-table">
+            <thead>
+                <tr>
+                    <th>✅ Fome Real</th>
+                    <th>⚡ Fome Emocional</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Surge gradualmente</td>
+                    <td>Surge de repente, com urgência</td>
+                </tr>
+                <tr>
+                    <td>Qualquer comida satisfaz</td>
+                    <td>Só AQUELA comida específica serve</td>
+                </tr>
+                <tr>
+                    <td>Passa após comer</td>
+                    <td>Continua mesmo depois de comer</td>
+                </tr>
+                <tr>
+                    <td>Sem culpa depois</td>
+                    <td>Acompanhada de culpa e vergonha</td>
+                </tr>
+                <tr>
+                    <td>Vem do estômago</td>
+                    <td>Vem da cabeça</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- MÉTODO PARA -->
+        <div class="section-header" style="margin-top: 40px;">
+            <div class="section-num">3</div>
+            <div>
+                <h2>O Método P.A.R.A.</h2>
+                <p style="color: #666; font-size: 13px; margin-top: 4px;">4 passos para interromper o ciclo antes de
+                    comer por emoção</p>
+            </div>
+        </div>
+
+        <div class="method-card pause no-break">
+            <div class="letter">P</div>
+            <h3 style="color: #6D28D9;">P — Pause</h3>
+            <p>Quando sentir o impulso de comer, <strong>pare por 10 segundos</strong>. Respire fundo 3 vezes. Esse
+                simples gesto ativa o córtex pré-frontal e desacelera a resposta automática.</p>
+            <div class="quote">"Eu não vou resistir à comida. Eu só vou esperar 10 segundos antes de decidir."</div>
+        </div>
+
+        <div class="method-card avalie no-break">
+            <div class="letter">A</div>
+            <h3 style="color: #EA580C;">A — Avalie</h3>
+            <p>Pergunte para si mesma: Estou com fome real? O que estava sentindo antes desse impulso? Se comer agora,
+                como me sentirei em 20 minutos?</p>
+        </div>
+
+        <div class="method-card redirecione no-break">
+            <div class="letter">R</div>
+            <h3 style="color: #16A34A;">R — Redirecione</h3>
+            <p>Se é fome emocional, escolha uma rota de saída: beba um copo d'água gelada devagar · faça 5 min de
+                caminhada · ligue para alguém querido · escreva 3 linhas sobre o que está sentindo.</p>
+        </div>
+
+        <div class="method-card aja no-break">
+            <div class="letter">A</div>
+            <h3 style="color: #2563EB;">A — Aja com Consciência</h3>
+            <p>Se ainda quiser comer — <strong>coma!</strong> Mas com consciência: sente, sem tela, mastigue devagar.
+                Comida com consciência → satisfação real → menos quantidade.</p>
+        </div>
+    </div>
+
+    <!-- SITUAÇÕES ESPECÍFICAS -->
+    <div class="page">
+        <div class="section-header">
+            <div class="section-num">4</div>
+            <div>
+                <h2>Estratégias para Situações Reais</h2>
+            </div>
+        </div>
+
+        <div class="situation no-break">
+            <div class="tag">Situação 1</div>
+            <h3>🌙 O Ataque Noturno</h3>
+            <div class="context">São 21h, você cansou do dia e quer "um docinho".</div>
+            <ul>
+                <li>Cortisol alto do dia + glicemia em queda. O cérebro está baixando a guarda.</li>
+                <li>Tome um chá quente (hibisco, camomila) — o ritual de preparar reconforta.</li>
+                <li>Se a fome for real: 1 colher de pasta de amendoim + 1 banana.</li>
+                <li>Se for emocional: escreva 3 coisas boas que aconteceram hoje.</li>
+            </ul>
+        </div>
+
+        <div class="situation no-break">
+            <div class="tag">Situação 2</div>
+            <h3>📅 O Final de Semana Sabotador</h3>
+            <div class="context">Na sexta tudo vai bem. No sábado, tudo desmorona.</div>
+            <ul>
+                <li>Mantenha 2 âncoras de rotina: café da manhã igual + treino de manhã.</li>
+                <li>Não existe "compensar a semana". Existe escolha a escolha.</li>
+                <li>Antes de sair para jantar: coma uma proteína. Nunca chegue com fome.</li>
+            </ul>
+        </div>
+
+        <div class="situation no-break">
+            <div class="tag">Situação 3</div>
+            <h3>💼 O Estresse Crônico do Trabalho</h3>
+            <div class="context">Reunião difícil → biscoito. E-mail ruim → chocolate.</div>
+            <ul>
+                <li>Substitua o snack de recompensa por um ritual: café preto + 2 min olhando pela janela.</li>
+                <li>Negocie: "Vou terminar este bloco e aí faço uma pausa de verdade."</li>
+                <li>Trate o cortisol na raiz: sono, água e o treino de 10min do Renova 30 reduzem cortisol
+                    comprovadamente.</li>
+            </ul>
+        </div>
+
+        <div class="situation no-break">
+            <div class="tag">Situação 4</div>
+            <h3>🎉 Festas e Reuniões Sociais</h3>
+            <div class="context">Mesa farta → culpa antecipada → come "porque já era" → espiral.</div>
+            <ul>
+                <li>Permita-se 1 prato consciente — sem contar caloria, sem neura.</li>
+                <li>Beba água entre os aperitivos.</li>
+                <li>Coma o que AMA de verdade, não só o que está disponível.</li>
+                <li><strong>Nunca jejue antes de uma festa</strong> — você chega faminta e come o dobro.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 7 DIAS + CONCLUSÃO -->
+    <div class="page">
+        <div class="section-header">
+            <div class="section-num">5</div>
+            <div>
+                <h2>Reprogramação em 7 Dias</h2>
+                <p style="color: #666; font-size: 13px; margin-top: 4px;">Um experimento gentil para começar na próxima
+                    semana</p>
+            </div>
+        </div>
+
+        <div class="day-row">
+            <div class="day-badge">D1</div>
+            <div>
+                <h4>Mapeie seus gatilhos</h4>
+                <p>Escreva seus 3 principais gatilhos emocionais com comida.</p>
+            </div>
+        </div>
+        <div class="day-row">
+            <div class="day-badge">D2</div>
+            <div>
+                <h4>Observe sem julgamento</h4>
+                <p>Toda vez que comer fora do planejado, anote o sentimento antes.</p>
+            </div>
+        </div>
+        <div class="day-row">
+            <div class="day-badge">D3</div>
+            <div>
+                <h4>Aplique o P.A.R.A.</h4>
+                <p>Use o método pelo menos 1 vez. Observe o que acontece.</p>
+            </div>
+        </div>
+        <div class="day-row">
+            <div class="day-badge">D4</div>
+            <div>
+                <h4>Crie seu menu de conforto</h4>
+                <p>Liste 5 coisas (não comida) que te acalmam nos momentos difíceis.</p>
+            </div>
+        </div>
+        <div class="day-row">
+            <div class="day-badge">D5</div>
+            <div>
+                <h4>Refeição silenciosa</h4>
+                <p>Faça 1 refeição em silêncio, sem tela, com atenção total à comida.</p>
+            </div>
+        </div>
+        <div class="day-row">
+            <div class="day-badge">D6</div>
+            <div>
+                <h4>Reconheça o padrão</h4>
+                <p>Identifique 1 padrão que se repetiu essa semana.</p>
+            </div>
+        </div>
+        <div class="day-row" style="border: none;">
+            <div class="day-badge">D7</div>
+            <div>
+                <h4>Celebre — sem punição</h4>
+                <p>Anote o que funcionou. Cada avanço conta, por menor que seja.</p>
+            </div>
+        </div>
+
+        <div class="back-cover">
+            <h2>Você não tem falta de<br />força de vontade.</h2>
+            <p>Existe design. Quando você muda o ambiente, os gatilhos e a forma como conversa consigo mesma, a comida
+                para de ser inimiga e vira aliada. Uma escolha consciente de cada vez.</p>
+            <p class="sig" style="margin-top: 24px;">Com carinho, <strong>Equipe Renova 30</strong></p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <strong>Renova 30</strong> © 2026 · Todos os direitos reservados.<br />
+        Este material é exclusivo para alunas do programa e não deve ser compartilhado.
+    </div>
+
+</body>
+
+</html>

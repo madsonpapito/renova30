@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guia de Compras Inteligente — Renova 30</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+        :root {
+            --orange: #F2994A;
+            --dark: #1C1C1E;
+            --gray: #6B6B7B;
+            --light: #F8F8F8;
+            --green: #27AE60;
+            --red: #EB5757;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: white;
+            color: var(--dark);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* ── PRINT STYLES ── */
+        @media print {
+            .page {
+                page-break-after: always;
+            }
+
+            .no-break {
+                page-break-inside: avoid;
+            }
+
+            body {
+                font-size: 12px;
+            }
+
+            .print-btn {
+                display: none !important;
+            }
+        }
+
+        /* ── SCREEN ONLY ── */
+        .print-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--orange);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 14px;
+            cursor: pointer;
+            z-index: 999;
+            box-shadow: 0 4px 20px rgba(242, 153, 74, .4);
+        }
+
+        .print-btn:hover {
+            background: #e8883a;
+        }
+
+        /* ── COVER PAGE ── */
+        .cover {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1C1C1E 0%, #2D2D35 60%, #F2994A 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 60px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cover::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: rgba(242, 153, 74, .08);
+            top: -200px;
+            right: -200px;
+        }
+
+        .cover::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .03);
+            bottom: -100px;
+            left: -100px;
+        }
+
+        .cover .badge {
+            background: rgba(242, 153, 74, .2);
+            border: 1px solid rgba(242, 153, 74, .4);
+            color: var(--orange);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            padding: 8px 20px;
+            border-radius: 50px;
+            margin-bottom: 32px;
+        }
+
+        .cover h1 {
+            font-size: 52px;
+            font-weight: 900;
+            color: white;
+            line-height: 1.1;
+            margin-bottom: 16px;
+            max-width: 700px;
+        }
+
+        .cover h1 span {
+            color: var(--orange);
+        }
+
+        .cover p {
+            color: rgba(255, 255, 255, .6);
+            font-size: 18px;
+            max-width: 500px;
+            margin-bottom: 40px;
+        }
+
+        .cover .meta {
+            display: flex;
+            gap: 32px;
+            color: rgba(255, 255, 255, .5);
+            font-size: 13px;
+        }
+
+        .cover .meta strong {
+            color: white;
+        }
+
+        /* ── PAGE LAYOUT ── */
+        .page {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 60px;
+        }
+
+        /* ── SECTION HEADER ── */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 32px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #F0F0F0;
+        }
+
+        .section-num {
+            width: 44px;
+            height: 44px;
+            background: var(--orange);
+            color: white;
+            font-weight: 900;
+            font-size: 20px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .section-header h2 {
+            font-size: 26px;
+            font-weight: 800;
+        }
+
+        /* ── VILLAIN CARD ── */
+        .villain-card {
+            background: #FFF8F4;
+            border: 1px solid #FFE8D6;
+            border-left: 4px solid var(--red);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-bottom: 16px;
+        }
+
+        .villain-card h3 {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--red);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .villain-card p {
+            color: #555;
+            margin-bottom: 6px;
+        }
+
+        .villain-substitute {
+            background: #E8F8EE;
+            border-radius: 8px;
+            padding: 8px 14px;
+            color: var(--green);
+            font-weight: 700;
+            font-size: 13px;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        /* ── TABLE ── */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        thead tr {
+            background: var(--dark);
+            color: white;
+        }
+
+        th {
+            padding: 14px 16px;
+            text-align: left;
+            font-size: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #F0F0F0;
+            font-size: 13px;
+        }
+
+        tr:nth-child(even) td {
+            background: var(--light);
+        }
+
+        td:first-child {
+            font-weight: 700;
+        }
+
+        .highlight-row td {
+            background: #FFF3E8 !important;
+        }
+
+        /* ── CHECKLIST ── */
+        .checklist {
+            list-style: none;
+        }
+
+        .checklist li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #F0F0F0;
+            font-size: 14px;
+        }
+
+        .checklist li:last-child {
+            border-bottom: none;
+        }
+
+        .checkbox {
+            width: 22px;
+            height: 22px;
+            border: 2px solid #D0D0D0;
+            border-radius: 6px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .checked .checkbox {
+            background: var(--green);
+            border-color: var(--green);
+            position: relative;
+        }
+
+        /* ── INFO BOX ── */
+        .info-box {
+            background: linear-gradient(135deg, #FFF3E8, #FFF8F4);
+            border: 1px solid #FFE0C0;
+            border-radius: 16px;
+            padding: 24px 28px;
+            margin: 24px 0;
+        }
+
+        .info-box .label {
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--orange);
+            margin-bottom: 12px;
+        }
+
+        .info-box p {
+            color: #444;
+            font-size: 14px;
+        }
+
+        /* ── TIP BOX ── */
+        .tip {
+            background: #F0FBF5;
+            border-left: 3px solid var(--green);
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 16px 0;
+            font-size: 13px;
+            color: #2D5A3D;
+            font-weight: 500;
+        }
+
+        /* ── GROCERY SECTION ── */
+        .grocery-category {
+            background: white;
+            border: 1px solid #EBEBEB;
+            border-radius: 16px;
+            padding: 20px 24px;
+            margin-bottom: 16px;
+        }
+
+        .grocery-category h4 {
+            font-size: 14px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--orange);
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #F0F0F0;
+        }
+
+        .grocery-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            font-size: 13px;
+            color: #444;
+            border-bottom: 1px dashed #F0F0F0;
+        }
+
+        .grocery-item:last-child {
+            border-bottom: none;
+        }
+
+        .check-box {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #D0D0D0;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        /* ── FOOTER ── */
+        .footer {
+            text-align: center;
+            padding: 40px 60px;
+            border-top: 1px solid #EBEBEB;
+            color: #999;
+            font-size: 12px;
+        }
+
+        .footer strong {
+            color: var(--dark);
+        }
+
+        /* ── BACK COVER ── */
+        .back-cover {
+            background: linear-gradient(135deg, #F2994A 0%, #F7B733 100%);
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 60px 40px;
+        }
+
+        .back-cover h2 {
+            font-size: 36px;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .back-cover p {
+            color: rgba(255, 255, 255, .8);
+            font-size: 16px;
+            max-width: 500px;
+            line-height: 1.7;
+        }
+
+        .back-cover .logo {
+            margin-top: 40px;
+            font-size: 24px;
+            font-weight: 900;
+            color: white;
+            letter-spacing: -0.5px;
+        }
+
+        .back-cover .logo span {
+            opacity: 0.7;
+            margin-left: 2px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <button class="print-btn" onclick="window.print()">🖨️ Imprimir / Salvar PDF</button>
+
+    <!-- CAPA -->
+    <div class="cover page">
+        <div class="badge">Bônus Exclusivo · Renova 30</div>
+        <h1>Guia de<br /><span>Compras</span><br />Inteligente</h1>
+        <p>Como montar seu carrinho sem gastar mais, comer melhor e ativar seus hormônios naturalmente.</p>
+        <div class="meta">
+            <span>📄 <strong>18 páginas</strong></span>
+            <span>🏷️ <strong>Nível Iniciante</strong></span>
+            <span>⏱️ <strong>Leitura: 20 min</strong></span>
+        </div>
+    </div>
+
+    <!-- INTRODUÇÃO -->
+    <div class="page">
+        <div class="info-box">
+            <div class="label">Para começar</div>
+            <p>Você não precisa gastar mais para comer melhor. A maioria das mulheres acima dos 40 perde dinheiro no
+                supermercado porque cai em armadilhas de marketing que disfarçam produtos ruins como "saudáveis". Este
+                guia vai te ensinar a ler rótulos, escolher os alimentos certos para o seu momento hormonal e montar um
+                carrinho que acelera sua transformação — sem neura, sem restrição e sem estourar o orçamento.</p>
+        </div>
+
+        <!-- VILÕES -->
+        <div class="section-header">
+            <div class="section-num">1</div>
+            <div>
+                <h2>Os 5 Vilões Disfarçados</h2>
+                <p style="color: var(--gray); font-size:13px; margin-top: 4px;">Alimentos que parecem saudáveis mas
+                    sabotam sua transformação</p>
+            </div>
+        </div>
+
+        <div class="villain-card no-break">
+            <h3>⚠️ Iogurte "Zero" ou "Light"</h3>
+            <p><strong>O problema:</strong> Retiram a gordura e colocam açúcar para compensar o sabor.</p>
+            <p><strong>No seu corpo:</strong> Pico de insulina → acúmulo abdominal direto.</p>
+            <div class="villain-substitute">✅ Substitua por: Iogurte grego integral natural (sem açúcar)</div>
+        </div>
+
+        <div class="villain-card no-break">
+            <h3>⚠️ Suco de Caixinha "Integral"</h3>
+            <p><strong>O problema:</strong> Mesmo sem açúcar adicionado, a frutose concentrada eleva a glicemia
+                rapidamente.</p>
+            <p><strong>No seu corpo:</strong> Fermentação intestinal → inchaço + retenção hídrica.</p>
+            <div class="villain-substitute">✅ Substitua por: Água com limão + gengibre ou água de coco natural</div>
+        </div>
+
+        <div class="villain-card no-break">
+            <h3>⚠️ Granola de Supermercado</h3>
+            <p><strong>O problema:</strong> Em média, tem 8g de açúcar por porção de 30g.</p>
+            <p><strong>No seu corpo:</strong> Ativação do cortisol → barriga resistente.</p>
+            <div class="villain-substitute">✅ Substitua por: Mix de sementes (chia, linhaça, abóbora) + castanhas</div>
+        </div>
+
+        <div class="villain-card no-break">
+            <h3>⚠️ Barra de Proteína Industrializada</h3>
+            <p><strong>O problema:</strong> Xarope de milho + corantes = pior que um biscoito comum.</p>
+            <div class="villain-substitute">✅ Substitua por: 2 castanhas-do-pará + 1 banana pequena</div>
+        </div>
+
+        <div class="villain-card no-break">
+            <h3>⚠️ Leite Desnatado</h3>
+            <p><strong>O problema:</strong> Sem gordura, não há absorção de vitamina D e K2 — essenciais para os
+                hormônios femininos.</p>
+            <div class="villain-substitute">✅ Substitua por: Leite integral orgânico (moderado) ou leite de amêndoa sem
+                açúcar</div>
+        </div>
+    </div>
+
+    <!-- OS 10 ALIMENTOS ALIADOS -->
+    <div class="page">
+        <div class="section-header">
+            <div class="section-num">2</div>
+            <div>
+                <h2>Os 10 Aliados da Menopausa</h2>
+                <p style="color: var(--gray); font-size:13px; margin-top:4px;">Itens que SEMPRE devem estar no seu
+                    carrinho</p>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Alimento</th>
+                    <th>Por que é aliado?</th>
+                    <th>Como usar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="highlight-row">
+                    <td>1</td>
+                    <td>🥚 Ovo Inteiro</td>
+                    <td>Rico em colina — regula hormônios e reduz inflamação</td>
+                    <td>Mexido, cozido ou omelete</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>🐟 Salmão / Sardinha</td>
+                    <td>Ômega-3 reduz cortisol e inflamação abdominal</td>
+                    <td>2x por semana</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>🥬 Espinafre / Rúcula</td>
+                    <td>Magnésio natural — melhora sono e reduz ansiedade</td>
+                    <td>Salada diária</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>🥑 Abacate</td>
+                    <td>Gordura boa que regula o estrogênio</td>
+                    <td>½ por dia</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>🍠 Batata-doce</td>
+                    <td>Carboidrato complexo anti-inflamatório</td>
+                    <td>Substitui o arroz branco</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>🌿 Cúrcuma</td>
+                    <td>Curcumina — anti-inflamatório poderoso</td>
+                    <td>1 colher no arroz ou sopa</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>🫚 Gengibre Fresco</td>
+                    <td>Ativa a digestão e reduz retenção</td>
+                    <td>Chá ou rallado em sucos</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td>🥛 Kefir</td>
+                    <td>Probiótico — regula intestino e serotonina</td>
+                    <td>1 copo pela manhã</td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td>🌾 Linhaça Dourada</td>
+                    <td>Fitoestrogênio natural → equilibra o estrogênio</td>
+                    <td>1 colher no iogurte</td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td>🌰 Castanha-do-pará</td>
+                    <td>Selênio — regula tireoide e metabolismo</td>
+                    <td>2 unidades por dia</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- COMO LER RÓTULO -->
+    <div class="page">
+        <div class="section-header">
+            <div class="section-num">3</div>
+            <div>
+                <h2>Como Ler um Rótulo em 30 Segundos</h2>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
+            <div style="background: #FFF3E8; border-radius: 16px; padding: 24px; border: 1px solid #FFE0C0;">
+                <div style="font-size: 28px; margin-bottom: 8px;">1️⃣</div>
+                <h4 style="font-weight:800; margin-bottom:8px;">Ignore a frente</h4>
+                <p style="font-size: 13px; color: #555;">As informações reais estão sempre no verso. A frente é 100%
+                    marketing.</p>
+            </div>
+            <div style="background: #FFF3E8; border-radius: 16px; padding: 24px; border: 1px solid #FFE0C0;">
+                <div style="font-size: 28px; margin-bottom: 8px;">2️⃣</div>
+                <h4 style="font-weight:800; margin-bottom:8px;">Lista de ingredientes</h4>
+                <p style="font-size: 13px; color: #555;">O que vem primeiro = o que tem mais. Se açúcar está nos 3
+                    primeiros → devolve.</p>
+            </div>
+            <div style="background: #FFF3E8; border-radius: 16px; padding: 24px; border: 1px solid #FFE0C0;">
+                <div style="font-size: 28px; margin-bottom: 8px;">3️⃣</div>
+                <h4 style="font-weight:800; margin-bottom:8px;">Verifique o sódio</h4>
+                <p style="font-size: 13px; color: #555;">Acima de 400mg por porção = inflamação garantida. Hidratação
+                    vai por água abaixo.</p>
+            </div>
+            <div style="background: #FFF3E8; border-radius: 16px; padding: 24px; border: 1px solid #FFE0C0;">
+                <div style="font-size: 28px; margin-bottom: 8px;">4️⃣</div>
+                <h4 style="font-weight:800; margin-bottom:8px;">Gordura Trans</h4>
+                <p style="font-size: 13px; color: #555;">Qualquer valor acima de 0g → não leva. Sem exceção.</p>
+            </div>
+        </div>
+
+        <div class="tip">
+            <strong>🔑 Regra de Ouro:</strong> Se você não consegue pronunciar ou não conhece metade dos ingredientes —
+            devolve na prateleira. Comida de verdade tem ingredientes simples.
+        </div>
+    </div>
+
+    <!-- LISTA DE COMPRAS -->
+    <div class="page">
+        <div class="section-header">
+            <div class="section-num">4</div>
+            <div>
+                <h2>Lista de Compras Semanal</h2>
+                <p style="color: var(--gray); font-size:13px; margin-top:4px;">Custo estimado: R$ 180–250 para a semana
+                    (família de 4)</p>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="grocery-category">
+                <h4>🥩 Proteínas</h4>
+                <div class="grocery-item">
+                    <div class="check-box"></div>Frango (peito ou coxa) — 1kg
+                </div>
+                <div class="grocery-item">
+                    <div class="check-box"></div>Ovos caipiras — 12 un.
+                </div>
+                <div class="grocery-item">
+                    <div class="check-box"></div>Atum em água — 3 latas
+                </div>
+                <div class="grocery-item">
+                    <div class="check-box"></div>Sardinha em água — 2 latas
+                </div>
+                <div class="grocery-item">
+                    <div class="check-box"></div>Iogurte grego integral — 2 potes
+                </div>
+            </div>
+            <div class="grocery-category">
+                <h4>🥦 Vegetais e Fibras</h4>
+                <div class="grocery-item">
+                    <div class="check-box"></div>Espinafre fresco — 1 maço
+                </div>
+                <div class="grocery-item">
+                    <div class="check-box"></div>Brócolis — 1 unidade
+                </div>
+                <div class="grocery-item">
+                    <div class="check-box"></div>Cenoura — 500g
+                </div>
+                <div class="grocery-item">
+                    <div class="check-box"></div>Abobrinha — 2 unidades
+                </div>
+                <div class="grocery-item">
+                    <div class="check-box"></div>Batata-doce — 1kg
+                </div>
+            </div>
+            <div class="grocery-category">
+                <h4>🍎 Frutas</h4>
+                <div class="grocery-item">
+                    <div class="check-box"></div>Banana nanica — 1 cacho pequeno
+                </div>
+                <div class="grocery-item">
+                    <div class="check-box"></div>Maçã — 4 unidades
+                </div>
+                <div class="grocery-item">
+                    <div class="check-box"></div>Mamão — ½ por dia
+                </div>
+                <div class="grocery-item">
+                    <div class="check-box"></div>Frutas vermelhas congeladas — 1 pct
+                </div>
+            </div>
+            <div class="grocery-category">
+                <h4>🫙 Gorduras e Extras</h4>
+                <div class="grocery-item">
+                    <div class="check-box"></div>Azeite extra virgem — 1 frasco
+                </div>
+                <div class="grocery-item">
+                    <div class="check-box"></div>Abacate — 2 unidades
+                </div>
+                <div class="grocery-item">
+                    <div class="check-box"></div>Castanha-do-pará — 100g
+                </div>
+                <div class="grocery-item">
+                    <div class="check-box"></div>Sementes de chia — 200g
+                </div>
+                <div class="grocery-item">
+                    <div class="check-box"></div>Linhaça dourada — 200g
+                </div>
+                <div class="grocery-item">
+                    <div class="check-box"></div>Cúrcuma em pó — 1 potinho
+                </div>
+                <div class="grocery-item">
+                    <div class="check-box"></div>Gengibre fresco — 1 pedaço
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DICAS E CONCLUSÃO -->
+    <div class="page">
+        <div class="section-header">
+            <div class="section-num">5</div>
+            <div>
+                <h2>5 Dicas de Economia</h2>
+            </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 14px; margin-bottom: 40px;">
+            <div class="tip">💡 <strong>Compre congelados:</strong> Frutos do mar, vegetais e frutas congeladas têm o
+                mesmo valor nutricional que frescos — e custam 40% menos.</div>
+            <div class="tip">💡 <strong>Atacarejo para secos:</strong> Castanhas, sementes, azeite e arroz integral
+                ficam muito mais baratos em embalagens maiores.</div>
+            <div class="tip">💡 <strong>Periferia do mercado:</strong> A periferia (hortifruti, carnes, laticínios) tem
+                os alimentos mais naturais. O corredor do meio é o território dos ultraprocessados.</div>
+            <div class="tip">💡 <strong>PREP semanal:</strong> Cozinhe ovos, legumes e frango no domingo. A semana
+                inteira fica mais fácil e você não recorre ao ultraprocessado com fome.</div>
+            <div class="tip">💡 <strong>Preço por kg:</strong> Compare sempre o preço por quilograma ou litro —
+                embalagens maiores quase sempre são mais baratas.</div>
+        </div>
+
+        <div class="back-cover" style="border-radius: 20px;">
+            <h2>Comprar bem é<br />um ato de amor próprio.</h2>
+            <p>Cada escolha que você faz no mercado é um voto em favor da mulher que você quer ser. Comece pela lista
+                desta semana, implemente uma mudança de cada vez.</p>
+            <div class="logo">Renova <span>30</span></div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <strong>Renova 30</strong> © 2026 · Todos os direitos reservados.<br />
+        Este material é exclusivo para alunas do programa e não deve ser compartilhado.
+    </div>
+
+</body>
+
+</html>
