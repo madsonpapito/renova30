@@ -15,7 +15,7 @@ export default function Sidebar({ activeSection, onSectionChange }: SidebarProps
     { id: 'treinos', label: 'Treinos', icon: Dumbbell },
     { id: 'alimentacao', label: 'Alimentação', icon: Apple },
     { id: 'bonus', label: 'Bônus Exclusivos', icon: Gift },
-    { id: 'progresso', label: 'Minha Transformação', icon: TrendingUp },
+    { id: 'progresso', label: 'Transformação', icon: TrendingUp },
     { id: 'comunidade', label: 'Comunidade', icon: Users },
   ];
 
@@ -31,9 +31,8 @@ export default function Sidebar({ activeSection, onSectionChange }: SidebarProps
 
       {/* Sidebar */}
       <aside
-        className={`fixed left-0 top-0 h-screen w-64 bg-sidebar text-sidebar-foreground shadow-lg transform transition-transform duration-300 z-40 lg:translate-x-0 ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+        className={`fixed left-0 top-0 h-screen w-64 bg-sidebar text-sidebar-foreground shadow-lg transform transition-transform duration-300 z-40 lg:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'
+          }`}
       >
         {/* Logo */}
         <div className="p-6 border-b border-sidebar-border">
@@ -57,14 +56,13 @@ export default function Sidebar({ activeSection, onSectionChange }: SidebarProps
                   onSectionChange(item.id);
                   setIsOpen(false);
                 }}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
-                  isActive
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${isActive
                     ? 'bg-sidebar-accent text-sidebar-accent-foreground font-medium'
                     : 'text-sidebar-foreground hover:bg-sidebar-accent/20'
-                }`}
+                  }`}
               >
                 <Icon size={20} />
-                <span>{item.label}</span>
+                <span className="whitespace-nowrap">{item.label}</span>
               </button>
             );
           })}
