@@ -46,7 +46,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             setSession(session);
             setUser(session?.user ?? null);
             if (session?.user) {
-                fetchProfile(session.user.id);
+                // Pequeno delay para garantir que o INSERT do perfil já finalizou
+                setTimeout(() => fetchProfile(session.user!.id), 500);
             } else {
                 setProfile(null);
                 setLoading(false);
@@ -56,7 +57,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return () => subscription.unsubscribe();
     }, []);
 
-    async function fetchProfile(userId: string) {
+    async function fetchProfile(userId: string, retries = 3): Promise<void> {
         setLoading(true);
         try {
             const { data, error } = await supabase
@@ -65,10 +66,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 .eq('id', userId)
                 .single();
 
-            if (error && error.code !== 'PGRST116') {
-                console.error('Erro ao buscar perfil:', error);
+            if (error && error.code === 'PGRST116') {
+                // Perfil não existe ainda (race condition pós-signup)
+                // Tenta novamente com backoff se houver retries restantes
+                if (retries > 0) {
+                    await new Promise(res => setTimeout(res, 800));
+                    return fetchProfile(userId, retries - 1);
+                }
+                setProfile(null);
+                return;
             }
-            setProfile(data ?? null);
+
+            if (error) {
+                console.error('Erro ao buscar perfil:', error);
+                setProfile(null);
+                return;
+            }
+
+            setProfile(data);
         } finally {
             setLoading(false);
         }
@@ -84,17 +99,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const { data, error } = await supabase.auth.signUp({ email, password });
         if (error) return { error: error.message };
 
-        // Cria perfil no banco após cadastro
         if (data.user) {
-            const { error: profileError } = await supabase.from('profiles').insert({
+            // Aguarda um momento para a sessão ser estabelecida antes de inserir
+            await new Promise(res => setTimeout(res, 300));
+
+            const novoProfile: Profile = {
                 id: data.user.id,
                 email,
                 nome,
                 semana_atual: 1,
                 dias_no_programa: 0,
-            });
-            if (profileError) console.error('Erro ao criar perfil:', profileError);
+            };
+
+            const { error: profileError } = await supabase
+                .from('profiles')
+                .insert(novoProfile);
+
+            if (profileError) {
+                console.error('Erro ao criar perfil:', profileError);
+            } else {
+                // Define o perfil imediatamente no estado — não espera o fetchProfile
+                setProfile(novoProfile);
+            }
         }
+
         return { error: null };
     }
 
