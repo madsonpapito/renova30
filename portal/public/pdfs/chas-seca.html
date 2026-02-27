@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chás Seca e Desincham — Renova 30</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+        :root {
+            --main: #E11D48;
+            --light: #FFE4E6;
+            --dark: #881337;
+            --accent: #F43F5E;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: white;
+            color: #111;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        @media print {
+            .page {
+                page-break-after: always;
+            }
+
+            .no-break {
+                page-break-inside: avoid;
+            }
+
+            body {
+                font-size: 13px;
+            }
+
+            .print-btn {
+                display: none !important;
+            }
+        }
+
+        .print-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--main);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 14px;
+            cursor: pointer;
+            z-index: 999;
+            box-shadow: 0 4px 20px rgba(225, 29, 72, .4);
+        }
+
+        .cover {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #4C0519 0%, #9F1239 50%, #E11D48 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 60px 40px;
+        }
+
+        .badge {
+            background: rgba(255, 255, 255, .2);
+            border: 1px solid rgba(255, 255, 255, .3);
+            color: white;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            padding: 8px 20px;
+            border-radius: 50px;
+            margin-bottom: 24px;
+        }
+
+        .cover h1 {
+            font-size: 56px;
+            font-weight: 900;
+            color: white;
+            line-height: 1;
+            margin-bottom: 16px;
+        }
+
+        .cover p {
+            color: rgba(255, 255, 255, .8);
+            font-size: 18px;
+            max-width: 500px;
+        }
+
+        .page {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 50px 60px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            color: var(--dark);
+            border-bottom: 3px solid var(--main);
+            padding-bottom: 8px;
+            margin-bottom: 24px;
+            font-weight: 900;
+        }
+
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .recipe-card {
+            border: 1px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 16px;
+            background: #FFF5F7;
+        }
+
+        .recipe-card h4 {
+            color: var(--main);
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+
+        .recipe-card p {
+            font-size: 12px;
+            color: #444;
+        }
+
+        .recipe-tag {
+            display: inline-block;
+            background: var(--light);
+            color: var(--dark);
+            font-size: 10px;
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-top: 8px;
+            text-transform: uppercase;
+        }
+
+        .table-tracker {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .table-tracker th,
+        .table-tracker td {
+            padding: 12px;
+            border: 1px solid #E5E7EB;
+            text-align: center;
+        }
+
+        .table-tracker th {
+            background: var(--main);
+            color: white;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            font-size: 11px;
+            color: #9CA3AF;
+            border-top: 1px solid #F3F4F6;
+        }
+    </style>
+</head>
+
+<body>
+    <button class="print-btn" onclick="window.print()">🖨️ Imprimir PDF</button>
+
+    <div class="cover page">
+        <div class="badge">Order Bump Exclusivo</div>
+        <h1>Chás Seca e<br>Desincham</h1>
+        <p>As Melhores Receitas 100% Naturais para Acelerar Metabolismo, Eliminar Impurezas e Secar Rápido (Até 4kg em 8
+            Dias)</p>
+    </div>
+
+    <div class="page">
+        <h2 class="section-title">Por que funciona tão rápido?</h2>
+        <p>Durante a menopausa, a baixa hormonal junto com estresse sinalizam ao corpo para reter líquido. Os chás deste
+            guia usam a química da natureza (termogênese suave) para convencer seus rins a liberarem toxinas e água de
+            forma segura. O resultado são pernas mais finas e barriga definida em até 8 dias.</p>
+
+        <h2 class="section-title" style="margin-top: 40px;">Receitas Principais</h2>
+        <div class="recipe-grid">
+            <div class="recipe-card no-break">
+                <h4>🍵 Verde com Abacaxi</h4>
+                <p>Ferva casca de abacaxi por 5min. Adicione 1 colher sopa chá verde e abafe. Coe. Beba até 16h.</p>
+                <div class="recipe-tag">Termo & Diurético</div>
+            </div>
+            <div class="recipe-card no-break">
+                <h4>🍵 Hibisco Anti-vontade</h4>
+                <p>1 colher de hibisco + 1 pau de canela em infusão por 10min em 500ml água quente.</p>
+                <div class="recipe-tag">Reduz Fome de Doce</div>
+            </div>
+            <div class="recipe-card no-break">
+                <h4>🍵 Cúrcuma e Limão</h4>
+                <p>½ colher chá de cúrcuma + pitada de pimenta do reino + limão. Ideal antes de dormir.</p>
+                <div class="recipe-tag">Anti-Inflamatório Ouro</div>
+            </div>
+            <div class="recipe-card no-break">
+                <h4>🍵 Cavalinha Seca-Barriga</h4>
+                <p>1 colher de cavalinha em infusão. O diurético mais forte. Use máx 4 dias seguidos.</p>
+                <div class="recipe-tag">O "Ralo" do Corpo</div>
+            </div>
+        </div>
+
+        <h2 class="section-title">O Protocolo Flex (8 Dias)</h2>
+        <ul style="padding-left: 20px; color: #444; line-height: 1.8;">
+            <li><strong>Dias 1 a 3:</strong> Foco no desinchaço. Beba Gengibre pela manhã e Cavalinha/Hibisco à tarde.
+            </li>
+            <li><strong>Dias 4 a 6:</strong> Foco no metabolismo. Verde com Abacaxi durante o dia, Cúrcuma à noite.</li>
+            <li><strong>Dias 7 e 8:</strong> Manutenção. Misture seus 2 favoritos de forma alternada.</li>
+        </ul>
+        <p style="margin-top: 10px; font-weight: bold; color: var(--main);">Importante: Máximo de 4 a 5 xícaras por dia!
+            Chá não substitui água.</p>
+    </div>
+
+    <div class="page no-break">
+        <h2 class="section-title">Tracker Diário Base</h2>
+        <table class="table-tracker">
+            <tr>
+                <th>Dia</th>
+                <th>Peso Matinal</th>
+                <th>Medida da Cintura</th>
+                <th>Quantos chás hoje?</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>8</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="footer">Renova 30 © 2026. Material exclusivo do Order Bump.</div>
+</body>
+
+</html>
