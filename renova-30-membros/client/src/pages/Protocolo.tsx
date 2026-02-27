@@ -51,13 +51,22 @@ export default function Protocolo() {
               <p className="font-display text-2xl font-bold text-primary mb-6">
                 Barriga Plana + Energia
               </p>
-              <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground flex items-center justify-center gap-2 mb-3">
-                <Download size={18} />
-                Download Protocolo Completo
-              </Button>
+              <a
+                href="/pdfs/protocolo-personalizado.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                download="Protocolo-Renova30.pdf"
+                className="w-full"
+              >
+                <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground flex items-center justify-center gap-2 mb-3">
+                  <Download size={18} />
+                  Download Protocolo Completo
+                </Button>
+              </a>
               <p className="text-xs text-foreground/60 text-center">
                 PDF de 20 páginas com seu plano detalhado
               </p>
+
             </div>
           </div>
         </div>
