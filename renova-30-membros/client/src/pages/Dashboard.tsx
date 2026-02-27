@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Calendar, Clock, Users, Download, LogOut, Rocket, X, Scale, Ruler, Zap, Smile } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Calendar, Clock, Users, Download, LogOut, Rocket, X, Scale, Ruler, Zap, Smile, Pencil, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabase';
@@ -8,13 +8,23 @@ interface DashboardProps {
   onNavigate: (section: string) => void;
 }
 
+interface BaselineCheckin {
+  id: string;
+  peso: number | null;
+  cintura: number | null;
+  humor: number | null;
+  energia: number | null;
+  notas: string | null;
+}
+
 export default function Dashboard({ onNavigate }: DashboardProps) {
   const { profile, signOut, user } = useAuth();
   const [showModal, setShowModal] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [baseline, setBaseline] = useState<BaselineCheckin | null | undefined>(undefined); // undefined = loading
+  const [isEditing, setIsEditing] = useState(false);
 
-  // Formulário de início de jornada
   const [form, setForm] = useState({
     peso: '',
     cintura: '',
@@ -29,49 +39,118 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
   const totalWeeks = 12;
   const firstName = profile?.nome?.split(' ')[0] ?? 'Aluna';
 
-  // Progresso REAL: baseado em dias no programa (0 a 84 dias = 12 semanas)
   const progressPercent = daysInProgram === 0
     ? 0
     : Math.min(Math.round((daysInProgram / 84) * 100), 100);
 
-  async function handleIniciarJornada(e: React.FormEvent) {
+  // Busca checkin baseline (semana 0) ao carregar
+  useEffect(() => {
+    if (!user) return;
+    supabase
+      .from('checkins')
+      .select('id, peso, cintura, humor, energia, notas')
+      .eq('user_id', user.id)
+      .eq('semana', 0)
+      .maybeSingle()
+      .then(({ data }) => {
+        setBaseline(data ?? null);
+        // Se existir, pré-preenche o formulário
+        if (data) {
+          setForm({
+            peso: data.peso?.toString() ?? '',
+            cintura: data.cintura?.toString() ?? '',
+            quadril: '',
+            energia: data.energia?.toString() ?? '5',
+            humor: data.humor?.toString() ?? '5',
+            notas: data.notas ?? '',
+          });
+        }
+      });
+  }, [user]);
+
+  function abrirModal(editMode = false) {
+    setIsEditing(editMode);
+    setShowModal(true);
+    setSaved(false);
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!user) return;
     setSaving(true);
 
     try {
-      // Salva checkin inicial (semana 0 = baseline)
-      const { error } = await supabase.from('checkins').insert({
-        user_id: user.id,
-        semana: 0,
-        peso: form.peso ? parseFloat(form.peso) : null,
-        cintura: form.cintura ? parseFloat(form.cintura) : null,
-        humor: parseInt(form.humor),
-        energia: parseInt(form.energia),
-        treinos_feitos: 0,
-        notas: form.notas || `Medidas iniciais — Quadril: ${form.quadril} cm`,
-      });
+      if (isEditing && baseline) {
+        // EDIÇÃO — atualiza o checkin existente
+        const { error } = await supabase
+          .from('checkins')
+          .update({
+            peso: form.peso ? parseFloat(form.peso) : null,
+            cintura: form.cintura ? parseFloat(form.cintura) : null,
+            humor: parseInt(form.humor),
+            energia: parseInt(form.energia),
+            notas: form.notas || (form.quadril ? `Quadril: ${form.quadril} cm` : null),
+          })
+          .eq('id', baseline.id);
 
-      if (error) {
-        console.error('Erro ao salvar checkin inicial:', error);
+        if (!error) {
+          // Atualiza baseline local com novos valores
+          setBaseline(prev => prev ? {
+            ...prev,
+            peso: form.peso ? parseFloat(form.peso) : null,
+            cintura: form.cintura ? parseFloat(form.cintura) : null,
+            humor: parseInt(form.humor),
+            energia: parseInt(form.energia),
+            notas: form.notas || null,
+          } : null);
+          setSaved(true);
+          setTimeout(() => {
+            setShowModal(false);
+            setSaved(false);
+          }, 1500);
+        }
       } else {
-        // Atualiza dias_no_programa para 1 (jornada iniciada)
-        await supabase
-          .from('profiles')
-          .update({ dias_no_programa: 1, updated_at: new Date().toISOString() })
-          .eq('id', user.id);
+        // NOVO — insere baseline
+        const novoBaseline = {
+          user_id: user.id,
+          semana: 0,
+          peso: form.peso ? parseFloat(form.peso) : null,
+          cintura: form.cintura ? parseFloat(form.cintura) : null,
+          humor: parseInt(form.humor),
+          energia: parseInt(form.energia),
+          treinos_feitos: 0,
+          notas: form.notas || (form.quadril ? `Medidas iniciais — Quadril: ${form.quadril} cm` : null),
+        };
 
-        setSaved(true);
-        setTimeout(() => {
-          setShowModal(false);
-          setSaved(false);
-          onNavigate('progresso');
-        }, 1500);
+        const { data, error } = await supabase
+          .from('checkins')
+          .insert(novoBaseline)
+          .select('id, peso, cintura, humor, energia, notas')
+          .single();
+
+        if (!error && data) {
+          setBaseline(data);
+          // Atualiza dias_no_programa para 1
+          await supabase
+            .from('profiles')
+            .update({ dias_no_programa: 1, updated_at: new Date().toISOString() })
+            .eq('id', user.id);
+
+          setSaved(true);
+          setTimeout(() => {
+            setShowModal(false);
+            setSaved(false);
+            onNavigate('progresso');
+          }, 1500);
+        }
       }
     } finally {
       setSaving(false);
     }
   }
+
+  const jornadaIniciada = baseline !== undefined && baseline !== null;
+  const loadingBaseline = baseline === undefined;
 
   return (
     <div className="space-y-8">
@@ -126,18 +205,31 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
                 />
               </div>
             </div>
-            {daysInProgram === 0 ? (
+
+            {/* Botão dinâmico baseado no estado */}
+            {loadingBaseline ? (
+              <div className="flex items-center justify-center py-2">
+                <Loader2 size={18} className="animate-spin text-primary/50" />
+              </div>
+            ) : jornadaIniciada ? (
+              // Jornada já iniciada → botão Editar
               <Button
-                onClick={() => setShowModal(true)}
+                variant="outline"
+                onClick={() => abrirModal(true)}
+                className="w-full flex items-center gap-2 text-foreground/70 border-border hover:border-primary hover:text-primary"
+              >
+                <Pencil size={14} />
+                Editar Medidas Iniciais
+              </Button>
+            ) : (
+              // Jornada não iniciada → botão Iniciar
+              <Button
+                onClick={() => abrirModal(false)}
                 className="w-full bg-primary hover:bg-primary/90 text-primary-foreground flex items-center gap-2"
               >
                 <Rocket size={16} />
                 Iniciar Minha Jornada
               </Button>
-            ) : (
-              <p className="text-sm text-foreground/70 text-center">
-                Você está no caminho certo! Continue assim.
-              </p>
             )}
           </div>
         </div>
@@ -215,7 +307,11 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
             { title: 'Guia Caça ao Tesouro', desc: 'Nutrientes-chave para menopausa' },
             { title: 'Quebre o Ciclo', desc: 'Controle emocional + 3 áudios' },
           ].map((b) => (
-            <div key={b.title} className="flex items-center gap-4 p-4 rounded-lg border border-border hover:bg-primary/5 transition-colors cursor-pointer" onClick={() => onNavigate('bonus')}>
+            <div
+              key={b.title}
+              className="flex items-center gap-4 p-4 rounded-lg border border-border hover:bg-primary/5 transition-colors cursor-pointer"
+              onClick={() => onNavigate('bonus')}
+            >
               <Download className="text-primary shrink-0" size={20} />
               <div>
                 <p className="font-bold text-foreground">{b.title}</p>
@@ -226,26 +322,25 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
         </div>
       </div>
 
-      {/* ===== MODAL INICIAR JORNADA ===== */}
+      {/* ===== MODAL INICIAR / EDITAR JORNADA ===== */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          {/* Overlay */}
           <div
             className="absolute inset-0 bg-black/60 backdrop-blur-sm"
             onClick={() => setShowModal(false)}
           />
-
-          {/* Modal */}
           <div className="relative bg-card rounded-2xl shadow-2xl border border-border w-full max-w-md z-10 overflow-hidden">
             {/* Header */}
             <div className="bg-gradient-to-r from-primary to-secondary p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="font-display text-2xl font-bold text-white">
-                    🌸 Sua Jornada Começa Agora
+                    {isEditing ? '✏️ Editar Medidas Iniciais' : '🌸 Sua Jornada Começa Agora'}
                   </h2>
                   <p className="text-white/80 text-sm mt-1">
-                    Registre suas medidas iniciais para acompanhar seu progresso real
+                    {isEditing
+                      ? 'Corrija qualquer medida incorreta'
+                      : 'Registre suas medidas iniciais para acompanhar seu progresso real'}
                   </p>
                 </div>
                 <button
@@ -258,8 +353,7 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
             </div>
 
             {/* Form */}
-            <form onSubmit={handleIniciarJornada} className="p-6 space-y-5">
-              {/* Peso e Cintura */}
+            <form onSubmit={handleSubmit} className="p-6 space-y-5">
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="flex items-center gap-1.5 text-sm font-medium text-foreground mb-2">
@@ -291,32 +385,30 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
                 </div>
               </div>
 
-              {/* Quadril */}
-              <div>
-                <label className="flex items-center gap-1.5 text-sm font-medium text-foreground mb-2">
-                  <Ruler size={14} className="text-accent" />
-                  Quadril (cm) <span className="text-foreground/50 font-normal">(opcional)</span>
-                </label>
-                <input
-                  type="number"
-                  step="0.5"
-                  placeholder="Ex: 102"
-                  value={form.quadril}
-                  onChange={e => setForm(f => ({ ...f, quadril: e.target.value }))}
-                  className="w-full px-3 py-2.5 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
-                />
-              </div>
+              {!isEditing && (
+                <div>
+                  <label className="flex items-center gap-1.5 text-sm font-medium text-foreground mb-2">
+                    <Ruler size={14} className="text-accent" />
+                    Quadril (cm) <span className="text-foreground/50 font-normal">(opcional)</span>
+                  </label>
+                  <input
+                    type="number"
+                    step="0.5"
+                    placeholder="Ex: 102"
+                    value={form.quadril}
+                    onChange={e => setForm(f => ({ ...f, quadril: e.target.value }))}
+                    className="w-full px-3 py-2.5 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+                  />
+                </div>
+              )}
 
-              {/* Energia */}
               <div>
                 <label className="flex items-center gap-1.5 text-sm font-medium text-foreground mb-3">
                   <Zap size={14} className="text-yellow-500" />
-                  Nível de energia hoje: <span className="text-primary font-bold ml-1">{form.energia}/10</span>
+                  Nível de energia: <span className="text-primary font-bold ml-1">{form.energia}/10</span>
                 </label>
                 <input
-                  type="range"
-                  min="1"
-                  max="10"
+                  type="range" min="1" max="10"
                   value={form.energia}
                   onChange={e => setForm(f => ({ ...f, energia: e.target.value }))}
                   className="w-full accent-primary"
@@ -327,16 +419,13 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
                 </div>
               </div>
 
-              {/* Humor */}
               <div>
                 <label className="flex items-center gap-1.5 text-sm font-medium text-foreground mb-3">
                   <Smile size={14} className="text-pink-500" />
-                  Como está seu humor hoje: <span className="text-primary font-bold ml-1">{form.humor}/10</span>
+                  Humor: <span className="text-primary font-bold ml-1">{form.humor}/10</span>
                 </label>
                 <input
-                  type="range"
-                  min="1"
-                  max="10"
+                  type="range" min="1" max="10"
                   value={form.humor}
                   onChange={e => setForm(f => ({ ...f, humor: e.target.value }))}
                   className="w-full accent-primary"
@@ -347,10 +436,10 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
                 </div>
               </div>
 
-              {/* Notas */}
               <div>
                 <label className="text-sm font-medium text-foreground mb-2 block">
-                  Como você está se sentindo hoje? <span className="text-foreground/50 font-normal">(opcional)</span>
+                  Como você está se sentindo?{' '}
+                  <span className="text-foreground/50 font-normal">(opcional)</span>
                 </label>
                 <textarea
                   placeholder="Ex: Cansada, com afrontamentos frequentes, mas determinada a mudar..."
@@ -361,17 +450,18 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
                 />
               </div>
 
-              {/* Botão */}
               <Button
                 type="submit"
                 disabled={saving || saved}
                 className="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 text-white font-bold py-3 text-base"
               >
                 {saved
-                  ? '✅ Jornada iniciada! Redirecionando...'
+                  ? (isEditing ? '✅ Medidas atualizadas!' : '✅ Jornada iniciada! Redirecionando...')
                   : saving
                     ? 'Salvando...'
-                    : '🚀 Iniciar Minha Jornada'}
+                    : isEditing
+                      ? '💾 Salvar Correções'
+                      : '🚀 Iniciar Minha Jornada'}
               </Button>
 
               <p className="text-xs text-center text-foreground/50">
