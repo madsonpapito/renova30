@@ -1,0 +1,21 @@
+{
+    "version": 2,
+    "buildCommand": "pnpm run build",
+    "outputDirectory": "dist/public",
+    "installCommand": "pnpm install",
+    "framework": null,
+    "routes": [
+        {
+            "src": "/pdfs/(.*)",
+            "dest": "/pdfs/$1"
+        },
+        {
+            "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|pdf|webp))",
+            "dest": "/$1"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/index.html"
+        }
+    ]
+}
