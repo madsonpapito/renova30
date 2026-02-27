@@ -79,14 +79,26 @@ export default function Comunidade() {
           Nossa comunidade fechada é um espaço seguro onde você pode compartilhar seus progressos, tirar dúvidas e receber apoio de outras mulheres na mesma jornada.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Button className="bg-primary hover:bg-primary/90 text-primary-foreground flex items-center justify-center gap-2">
-            <ExternalLink size={18} />
-            Entrar no Telegram
-          </Button>
-          <Button className="bg-secondary hover:bg-secondary/90 text-secondary-foreground flex items-center justify-center gap-2">
-            <ExternalLink size={18} />
-            Entrar no Facebook
-          </Button>
+          <a
+            href="https://t.me/renova30oficial"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground flex items-center justify-center gap-2">
+              <ExternalLink size={18} />
+              Entrar no Telegram
+            </Button>
+          </a>
+          <a
+            href="https://www.facebook.com/groups/renova30"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Button className="w-full bg-secondary hover:bg-secondary/90 text-secondary-foreground flex items-center justify-center gap-2">
+              <ExternalLink size={18} />
+              Entrar no Facebook
+            </Button>
+          </a>
         </div>
       </div>
 

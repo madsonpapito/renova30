@@ -1,4 +1,4 @@
-import { Play, Star, Filter } from 'lucide-react';
+import { Play, Star, Filter, Clock, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 
@@ -72,6 +72,17 @@ const treinos = [
 export default function Treinos({ onNavigate }: TreinosProps) {
   const [filtroNivel, setFiltroNivel] = useState('Todos');
   const [filtroObjetivo, setFiltroObjetivo] = useState('Todos');
+  const [favs, setFavs] = useState<number[]>([2, 5]);
+  const [toastMsg, setToastMsg] = useState('');
+
+  function showToast(msg: string) {
+    setToastMsg(msg);
+    setTimeout(() => setToastMsg(''), 3000);
+  }
+
+  function toggleFav(id: number) {
+    setFavs(prev => prev.includes(id) ? prev.filter(f => f !== id) : [...prev, id]);
+  }
 
   const treinosFiltrados = treinos.filter((treino) => {
     const nivelMatch = filtroNivel === 'Todos' || treino.nivel === filtroNivel;
@@ -118,11 +129,10 @@ export default function Treinos({ onNavigate }: TreinosProps) {
                 <button
                   key={nivel}
                   onClick={() => setFiltroNivel(nivel)}
-                  className={`px-4 py-2 rounded-lg transition-all ${
-                    filtroNivel === nivel
+                  className={`px-4 py-2 rounded-lg transition-all ${filtroNivel === nivel
                       ? 'bg-primary text-primary-foreground'
                       : 'bg-border text-foreground hover:bg-border/80'
-                  }`}
+                    }`}
                 >
                   {nivel}
                 </button>
@@ -134,15 +144,14 @@ export default function Treinos({ onNavigate }: TreinosProps) {
               Objetivo
             </label>
             <div className="flex flex-wrap gap-2">
-              {objetivos.slice(0, 4).map((objetivo) => (
+              {objetivos.map((objetivo) => (
                 <button
                   key={objetivo}
                   onClick={() => setFiltroObjetivo(objetivo)}
-                  className={`px-4 py-2 rounded-lg transition-all text-sm ${
-                    filtroObjetivo === objetivo
+                  className={`px-4 py-2 rounded-lg transition-all text-sm ${filtroObjetivo === objetivo
                       ? 'bg-secondary text-secondary-foreground'
                       : 'bg-border text-foreground hover:bg-border/80'
-                  }`}
+                    }`}
                 >
                   {objetivo}
                 </button>
@@ -152,53 +161,74 @@ export default function Treinos({ onNavigate }: TreinosProps) {
         </div>
       </div>
 
+      {/* Toast */}
+      {toastMsg && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-foreground text-background px-6 py-3 rounded-full shadow-lg text-sm font-medium animate-pulse">
+          {toastMsg}
+        </div>
+      )}
+
       {/* Treinos Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {treinosFiltrados.map((treino) => (
-          <div
-            key={treino.id}
-            className="bg-card rounded-xl overflow-hidden border border-border shadow-sm hover:shadow-md transition-shadow"
-          >
-            {/* Thumbnail */}
-            <div className="relative bg-gradient-to-br from-primary/20 to-secondary/20 h-40 flex items-center justify-center">
-              <Play className="text-primary" size={48} />
-              <div className="absolute top-3 right-3 bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-bold">
-                Semana {treino.semana}
-              </div>
-            </div>
-
-            {/* Content */}
-            <div className="p-5">
-              <div className="flex items-start justify-between mb-3">
-                <div>
-                  <h3 className="font-display text-lg font-bold text-foreground">
-                    {treino.nome}
-                  </h3>
-                  <p className="text-sm text-foreground/70">{treino.descricao}</p>
+        {treinosFiltrados.map((treino) => {
+          const isFav = favs.includes(treino.id);
+          return (
+            <div
+              key={treino.id}
+              className="bg-card rounded-xl overflow-hidden border border-border shadow-sm hover:shadow-md transition-shadow"
+            >
+              {/* Thumbnail */}
+              <div className="relative bg-gradient-to-br from-primary/20 to-secondary/20 h-40 flex items-center justify-center cursor-pointer group"
+                onClick={() => showToast('🎬 Vídeos em breve! Por enquanto, siga o protocolo em PDF.')}>
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
+                <Play className="text-primary group-hover:scale-110 transition-transform" size={48} />
+                <div className="absolute top-3 right-3 bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-bold">
+                  Semana {treino.semana}
                 </div>
-                <button className="text-accent hover:text-accent/80 transition-colors">
-                  <Star
-                    size={20}
-                    fill={treino.favorito ? 'currentColor' : 'none'}
-                  />
-                </button>
+                <div className="absolute bottom-2 right-2 flex items-center gap-1 bg-black/40 text-white px-2 py-1 rounded text-xs">
+                  <Clock size={10} />
+                  {treino.duracao} min
+                </div>
               </div>
 
-              {/* Metadata */}
-              <div className="flex items-center gap-4 mb-4 text-sm text-foreground/60">
-                <span>{treino.duracao} min</span>
-                <span className="px-2 py-1 bg-border rounded text-xs font-medium">
-                  {treino.nivel}
-                </span>
-              </div>
+              {/* Content */}
+              <div className="p-5">
+                <div className="flex items-start justify-between mb-3">
+                  <div>
+                    <h3 className="font-display text-lg font-bold text-foreground">
+                      {treino.nome}
+                    </h3>
+                    <p className="text-sm text-foreground/70">{treino.descricao}</p>
+                  </div>
+                  <button
+                    onClick={() => toggleFav(treino.id)}
+                    className={`transition-colors ${isFav ? 'text-accent' : 'text-foreground/30 hover:text-accent'}`}
+                    title={isFav ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
+                  >
+                    <Star size={20} fill={isFav ? 'currentColor' : 'none'} />
+                  </button>
+                </div>
 
-              {/* CTA */}
-              <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
-                Assistir Agora
-              </Button>
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="px-2 py-1 bg-border rounded text-xs font-medium text-foreground/70">
+                    {treino.nivel}
+                  </span>
+                  <span className="px-2 py-1 bg-primary/10 text-primary rounded text-xs font-medium">
+                    {treino.objetivo}
+                  </span>
+                </div>
+
+                <Button
+                  onClick={() => showToast('🎬 Vídeos em breve! Siga seu protocolo PDF enquanto isso. 🌸')}
+                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground flex items-center justify-center gap-2"
+                >
+                  <Play size={16} />
+                  Assistir Agora
+                </Button>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Empty State */}

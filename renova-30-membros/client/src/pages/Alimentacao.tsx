@@ -1,7 +1,15 @@
 import { Apple, Clock, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useState } from 'react';
 
 export default function Alimentacao() {
+  const [toast, setToast] = useState('');
+
+  function showToast(msg: string) {
+    setToast(msg);
+    setTimeout(() => setToast(''), 3000);
+  }
+
   const receitas = [
     { id: 1, nome: 'Vitamina Hormonal', tempo: '5 min', tipo: 'Café' },
     { id: 2, nome: 'Salada Verde com Proteína', tempo: '10 min', tipo: 'Almoço' },
@@ -102,8 +110,12 @@ export default function Alimentacao() {
                     {receita.tipo}
                   </span>
                 </div>
-                <Button variant="outline" className="w-full text-sm">
-                  Assistir Vídeo
+                <Button
+                  variant="outline"
+                  className="w-full text-sm"
+                  onClick={() => showToast('🎬 Vídeos de receitas em breve! Enquanto isso, use o Guia Caça ao Tesouro nos Bônus.')}
+                >
+                  Em Breve 🎬
                 </Button>
               </div>
             </div>
@@ -125,7 +137,10 @@ export default function Alimentacao() {
             <p className="text-xs text-foreground/60 mb-4">
               Frango, ovos, feijão, vegetais básicos. Alimentação balanceada sem luxo.
             </p>
-            <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-sm">
+            <Button
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-sm"
+              onClick={() => showToast('📋 Lista sendo preparada! Baixe o Guia de Compras nos Bônus por enquanto.')}
+            >
               Download Lista
             </Button>
           </div>
@@ -138,7 +153,10 @@ export default function Alimentacao() {
             <p className="text-xs text-foreground/60 mb-4">
               Variedade completa. Frango, peixe, ovos, muitos vegetais e frutas.
             </p>
-            <Button className="w-full bg-secondary hover:bg-secondary/90 text-secondary-foreground text-sm">
+            <Button
+              className="w-full bg-secondary hover:bg-secondary/90 text-secondary-foreground text-sm"
+              onClick={() => showToast('📋 Lista sendo preparada! Baixe o Guia de Compras nos Bônus por enquanto.')}
+            >
               Download Lista
             </Button>
           </div>
@@ -151,7 +169,10 @@ export default function Alimentacao() {
             <p className="text-xs text-foreground/60 mb-4">
               Redução de carboidratos. Salmão, frango, muitos vegetais, sementes.
             </p>
-            <Button className="w-full bg-accent hover:bg-accent/90 text-accent-foreground text-sm">
+            <Button
+              className="w-full bg-accent hover:bg-accent/90 text-accent-foreground text-sm"
+              onClick={() => showToast('📋 Lista sendo preparada! Baixe o Guia de Compras nos Bônus por enquanto.')}
+            >
               Download Lista
             </Button>
           </div>
@@ -185,6 +206,11 @@ export default function Alimentacao() {
           ))}
         </div>
       </div>
+      {toast && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-foreground text-background px-6 py-3 rounded-full shadow-lg text-sm font-medium">
+          {toast}
+        </div>
+      )}
     </div>
   );
 }
